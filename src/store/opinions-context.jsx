@@ -37,6 +37,50 @@ export function OpinionsContextProvider({ children }) {
     setOpinions((prevOpinions) => [savedOpinion, ...prevOpinions]);
   }
 
+  async function upvote(id){
+    const response = await fetch(`http://localhost:3000/opinions/${id}/upvote`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if(!response.ok){
+      return;
+    }
+
+    setOpinions((prevOpinions) => {
+      return prevOpinions.map((option)=>{
+        if(option.id===id) {
+          return {...option, votes: option.votes+1}
+        }
+        return option
+      })
+    })
+  }
+
+  async function downvote(id){
+    const response = await fetch(`http://localhost:3000/opinions/${id}/downvote`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if(!response.ok){
+      return;
+    }
+
+    setOpinions((prevOpinions) => {
+      return prevOpinions.map((option)=>{
+        if(option.id===id) {
+          return {...option, votes: option.votes-1}
+        }
+        return option
+      })
+    })
+  }
+
   function upvoteOpinion(id) {
     setOpinions((prevOpinions) => {
       return prevOpinions.map((opinion) => {
@@ -64,6 +108,8 @@ export function OpinionsContextProvider({ children }) {
     addOpinion,
     upvoteOpinion,
     downvoteOpinion,
+    upvote,
+    downvote
   };
 
   return <OpinionsContext value={contextValue}>{children}</OpinionsContext>;

@@ -97,18 +97,20 @@ app.post('/opinions/:id/upvote', async (req, res) => {
 });
 
 app.post('/opinions/:id/downvote', async (req, res) => {
-  const { id } = req.params;
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  try {
-    const opinion = await downvoteOpinion(Number(id));
-    if (!opinion) {
-      return res.status(404).json({ error: 'Opinion not found.' });
-    }
-    res.json(opinion);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Error downvoting opinion.' });
-  }
+  res.status(500).json({ error: 'Error downvoting opinion.' });
+  // const { id } = req.params;
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+  // try {
+  //   const opinion = await downvoteOpinion(Number(id));
+  //   if (!opinion) {
+  //     return res.status(404).json({ error: 'Opinion not found.' });
+  //   }
+  //   res.json(opinion);
+  // } catch (error) {
+  //   console.log(error);
+  //   res.status(500).json({ error: 'Error downvoting opinion.' });
+  // }
 });
 
 app.listen(3000, () => {
